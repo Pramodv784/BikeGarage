@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "191560869825",
+    "project_id": "bikegarage-5b538",
+    "storage_bucket": "bikegarage-5b538.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191560869825:android:beba20bbd408f77f74b140",
+        "android_client_info": {
+          "package_name": "com.example.bikegarage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191560869825-mgj5jg7u18glf06r3jc2lfbfeq42j0jq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3CUayJZ9XXxFfeGcPJ7Xwr7Z5tzqZpdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191560869825-mgj5jg7u18glf06r3jc2lfbfeq42j0jq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

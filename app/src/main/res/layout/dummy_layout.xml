@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Hello"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/tv_text"
+        android:gravity="center"
+        android:textSize="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="0dp"
+        android:id="@+id/bt_1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_text"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintEnd_toStartOf="@+id/bt_2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:layout_width="0dp"
+        android:id="@+id/bt_2"
+        android:layout_marginEnd="@dimen/_16sdp"
+         app:layout_constraintEnd_toStartOf="@+id/bt3"
+        app:layout_constraintStart_toEndOf="@+id/bt_1"
+        app:layout_constraintTop_toTopOf="@+id/bt_1"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_1"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="3"
+        app:layout_constraintStart_toEndOf="@+id/bt_2"
+        android:id="@+id/bt3"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bt_2"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_2"
+      />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:id="@+id/text_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":"
+        android:id="@+id/tv_colon"
+        app:layout_constraintStart_toEndOf="@+id/text_1"
+        app:layout_constraintTop_toTopOf="@+id/text_1"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+       app:layout_constraintEnd_toStartOf="@+id/text_2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pramod"
+        android:id="@+id/text_2"
+        app:layout_constraintTop_toTopOf="@+id/text_1"
+        app:layout_constraintBottom_toBottomOf="@+id/text_1"
+        app:layout_constraintStart_toEndOf="@+id/tv_colon"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:id="@+id/tv_address"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@+id/text_1"
+        app:layout_constraintTop_toBottomOf="@+id/text_1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="  :  Indore"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintTop_toTopOf="@+id/tv_address"
+        app:layout_constraintStart_toEndOf="@+id/tv_address"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_address"
+       />
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/bt_float"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        app:layout_constraintTop_toTopOf="@+id/bt_float"
+
+        app:layout_constraintEnd_toStartOf="@+id/bt_float"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_float"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    
+
+</androidx.constraintlayout.widget.ConstraintLayout>
