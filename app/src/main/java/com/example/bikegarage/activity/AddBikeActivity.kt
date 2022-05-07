@@ -24,7 +24,6 @@ import com.google.firebase.database.*
 
 
 
-
 class AddBikeActivity : AppCompatActivity() {
     var databaseReference:FirebaseDatabase?=null
     private var _activity: AddBikeActivity? = null
