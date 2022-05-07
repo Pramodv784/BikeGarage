@@ -1,11 +1,13 @@
 package com.example.bikegarage.activity
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -19,10 +21,27 @@ import androidx.databinding.DataBindingUtil
 import com.example.bikegarage.R
 import com.example.bikegarage.databinding.ActivityAddBikeBinding
 import com.example.bikegarage.model.AddBikeModel
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
-
-
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.OnProgressListener
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
+import com.theartofdev.edmodo.cropper.CropImage
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class AddBikeActivity : AppCompatActivity() {
     var databaseReference:FirebaseDatabase?=null
@@ -34,14 +53,22 @@ class AddBikeActivity : AppCompatActivity() {
     private var _dataList: ArrayList<AddBikeModel>? = null
     var getAsSquare: Boolean? = false
     var getFromCamera: Boolean? = false
+    private var photoFile: File? = null
+    private var photoUri: Uri? = null
+    var storage: FirebaseStorage? = null
+    var storageReference: StorageReference? = null
+    var file: File?=null
+    var resultUri:Uri?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView(this, R.layout.activity_add_bike)
-
+        _activity = this
         _binding?.executePendingBindings()
         _binding?.topbar?.ivBack?.setOnClickListener { onBackPressed() }
 
        databaseReference= FirebaseDatabase.getInstance()
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage?.getReference();
 
         _binding?.ivImage?.setOnClickListener {  launchImagePickerDialog(true) }
         yourReference=databaseReference?.getReference("Bike")
@@ -131,7 +158,7 @@ class AddBikeActivity : AppCompatActivity() {
                 photoUri = photoFile?.let {
                     FileProvider.getUriForFile(
                         applicationContext,
-                        "com.example.bikegarage",
+                        BuildConfig.APPLICATION_ID + ".provider",
                         it
                     )
                 }
@@ -151,6 +178,27 @@ class AddBikeActivity : AppCompatActivity() {
 
         override fun onPermissionDenied(arrayList: java.util.ArrayList<String>) {}
     }
+
+    var cameraResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            try {
+                val uri = FileProvider.getUriForFile(
+                    _activity!!, BuildConfig.APPLICATION_ID + ".provider",
+                    photoFile!!
+                )
+                /* // Uri resultUri = Objects.requireNonNull(CropImage.getActivityResult(result.getData())).getUri();
+        Bitmap bmp = MediaStore.Images.Media.getBitmap(_activity.getContentResolver(), uri);
+        Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+        String path = MediaStore.Images.Media.insertImage(_activity.getContentResolver(), bmp, "title", null);*/launchImageCropper(
+                    uri
+                )
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
     var galleryResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -166,12 +214,119 @@ class AddBikeActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun randomFile(): File {
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val now = LocalDate.now()
+        return File(
+            if (_activity != null) _activity!!.filesDir else null,
+            "pic-" + UUID.randomUUID() + '-' + now.format(formatter) + ".jpg"
+        )
+    }
     private fun launchImageCropper(path: Uri) {
         if (getAsSquare!!) {
             cropResult.launch(CropImage.activity(path).getIntent(_activity!!))
         } else {
             cropResult.launch(CropImage.activity(path).getIntent(_activity!!))
         }
+    }
+    var cropResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+
+            try {
+               resultUri =
+                    Objects.requireNonNull(CropImage.getActivityResult(result.data))
+                        .uri
+                val bmp =
+                    MediaStore.Images.Media.getBitmap(_activity!!.contentResolver, resultUri)
+                _binding!!.ivImage.setImageBitmap(bmp)
+                file = saveBitmap(_activity!!, bmp, "photoName")
+                val filePart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                    "file", file!!.name, RequestBody.create(
+                        "image/*".toMediaTypeOrNull(),
+                        (file!!)
+                    )
+
+                )
+
+                uploadImage()
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+    private fun uploadImage() {
+        if (resultUri != null) {
+
+            // Code for showing progressDialog while uploading
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setTitle("Uploading...")
+            progressDialog.show()
+
+            // Defining the child of storageReference
+           var storageRefrence:StorageReference= storageReference?.child(
+               "images/"
+                       + UUID.randomUUID().toString())!!;
+
+
+
+
+            // adding listeners on upload
+            // or failure of image
+            storageRefrence.putFile(resultUri!!)
+                .addOnSuccessListener(
+                    OnSuccessListener<UploadTask.TaskSnapshot?> { // Image uploaded successfully
+                        // Dismiss dialog
+                        progressDialog.dismiss()
+                        Toast
+                            .makeText(
+                                this@AddBikeActivity,
+                                "Image Uploaded!!",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
+                    })
+                .addOnFailureListener(OnFailureListener { e -> // Error, Image not uploaded
+                    progressDialog.dismiss()
+                    Toast
+                        .makeText(
+                            this@AddBikeActivity,
+                            "Failed " + e.message,
+                            Toast.LENGTH_SHORT
+                        )
+                        .show()
+                })
+                .addOnProgressListener(
+                    OnProgressListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+
+                        // Progress Listener for loading
+                        // percentage on the dialog box
+                        val progress = (100.0
+                                * taskSnapshot.bytesTransferred
+                                / taskSnapshot.totalByteCount)
+                        progressDialog.setMessage(
+                            "Uploaded "
+                                    + progress.toInt() + "%"
+                        )
+                    })
+        }
+    }
+    private fun saveBitmap(context: Context, bitmap: Bitmap, name: String): File {
+        val filesDir = context.filesDir
+        val imageFile = File(filesDir, "$name.jpg")
+        val os: OutputStream
+        try {
+            os = FileOutputStream(imageFile)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.flush()
+            os.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return imageFile
     }
 
 
