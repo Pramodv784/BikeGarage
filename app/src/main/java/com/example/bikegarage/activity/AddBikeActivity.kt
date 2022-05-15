@@ -1,5 +1,6 @@
 package com.example.bikegarage.activity
 
+import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -8,9 +9,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,9 +26,12 @@ import androidx.databinding.DataBindingUtil
 import com.example.bikegarage.R
 import com.example.bikegarage.databinding.ActivityAddBikeBinding
 import com.example.bikegarage.model.AddBikeModel
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.internal.TextWatcherAdapter
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.OnProgressListener
@@ -39,6 +47,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -59,13 +68,16 @@ class AddBikeActivity : AppCompatActivity() {
     var storageReference: StorageReference? = null
     var file: File?=null
     var resultUri:Uri?= null
+    var request:AddBikeModel= AddBikeModel()
+    var remainigPrice:Double?=0.0;
+    var cal = Calendar.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView(this, R.layout.activity_add_bike)
         _activity = this
         _binding?.executePendingBindings()
         _binding?.topbar?.ivBack?.setOnClickListener { onBackPressed() }
-
+       _binding?.topbar?.tvTitle?.setText("Add Bike")
        databaseReference= FirebaseDatabase.getInstance()
         storage = FirebaseStorage.getInstance();
         storageReference = storage?.getReference();
@@ -75,21 +87,128 @@ class AddBikeActivity : AppCompatActivity() {
         _binding?.btAdd?.setOnClickListener {
             addData()
         }
+        _binding?.etBikePrice?.addTextChangedListener(object:TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                    if(s.toString().length>0 )
+                    {
+                        if(_binding?.etUserPay?.text.toString().length>0){
+                            remainigPrice=(s.toString().toDouble())-(_binding?.etUserPay?.text.toString().toDouble())
+                            _binding?.etRemainAmount?.setText(remainigPrice.toString())
+                        }
+                    }
+                    else{
+                        _binding?.etRemainAmount?.setText("")
+                        _binding?.etUserPay?.setText("")
+                    }
+
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+        _binding?.etUserPay?.addTextChangedListener(object:TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(s.toString().length>0)
+                {
+                    remainigPrice=(_binding?.etBikePrice?.text.toString().toDouble())-(s.toString().toDouble())
+                    _binding?.etRemainAmount?.setText(remainigPrice.toString())
+                }
+                else
+                {
+                    _binding?.etRemainAmount?.setText("")
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+        _binding?.tvDate?.setOnClickListener {
+            DatePickerDialog(this@AddBikeActivity,
+                dateSetListener,
+                // set DatePickerDialog to point to today's date when it loads up
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
 
     }
 
 
-
+    val dateSetListener = object : DatePickerDialog.OnDateSetListener {
+        override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
+                               dayOfMonth: Int) {
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDateInView()
+        }
+    }
     private fun addData() {
-       _binding?.progressBar?.visibility= VISIBLE
+
        // mDbRef = databaseReference.("Donor/Name");
-        if (_binding?.etName?.text.toString().isEmpty()) {
-            Toast.makeText(applicationContext, "Please enter name", Toast.LENGTH_SHORT).show()
-        } else {
+        if (_binding?.etUserName?.text.toString().isEmpty()) {
+            Toast.makeText(applicationContext, "Please enter user name", Toast.LENGTH_SHORT).show()
+        }
+        else if(_binding?.etAddress?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please enter address", Toast.LENGTH_SHORT).show()
+        }
+        else if(_binding?.etMobile?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please enter mobile number", Toast.LENGTH_SHORT).show()
+        }
+
+        else if(_binding?.etBikeName?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please enter bike name", Toast.LENGTH_SHORT).show()
+        }
+        else if(_binding?.etRc?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please enter bike RC number", Toast.LENGTH_SHORT).show()
+        }
+        else if(_binding?.etCh?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please enter bike CH number", Toast.LENGTH_SHORT).show()
+        }
+
+        else if(_binding?.etBikePrice?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please enter bike price", Toast.LENGTH_SHORT).show()
+        }
+        else if(_binding?.etUserPay?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please enter user pay amount", Toast.LENGTH_SHORT).show()
+        }
+        else if(_binding?.etGurantee?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please enter gurantee user name", Toast.LENGTH_SHORT).show()
+        }
+        else if(_binding?.tvDate?.text.toString().isEmpty())
+        {
+            Toast.makeText(applicationContext, "Please choose date", Toast.LENGTH_SHORT).show()
+        }
+
+
+        else {
+            _binding?.progressBar?.visibility= VISIBLE
             /*bikeData?.setValue("aniket")?.addOnFailureListener {
                 print(it)
             }*/
-           var data=
+          /* var data=
                 AddBikeModel(
                     _binding?.etName?.text.toString().trim(),
                     _binding?.etBrand?.text.toString().trim(),
@@ -97,11 +216,30 @@ class AddBikeActivity : AppCompatActivity() {
                     "",
                     20000.0,
                     ""
-                )
+                )*/
+            request.bikeName= _binding?.etBikeName?.text.toString()
+            request.userName= _binding?.etUserName?.text.toString()
+           request.userFather= _binding?.etUserSonof?.text.toString()
+           request.userAddress= _binding?.etAddress?.text.toString()
+           request.mobileNo= _binding?.etMobile?.text.toString()
+           request.district= _binding?.etDistrict?.text.toString()
+           request.rcNo= _binding?.etRc?.text.toString()
+           request.bikeprice= _binding?.etBikePrice?.text.toString().toDouble()
+           request.remainingprice= _binding?.etRemainAmount?.text.toString().toDouble()
+           request.userpayAmountprice= _binding?.etUserPay?.text.toString().toDouble()
+           request.guaranteeUser= _binding?.etGurantee?.text.toString()
+           request.guaranteeUserAddress= _binding?.etGuranteeAddress?.text.toString()
+           request.guaranteeUserDistrict= _binding?.etGuranterDistrict?.text.toString()
+           request.guaranteeUserMobile= _binding?.etGuranteePhone?.text.toString()
+           request.chNo= _binding?.etCh?.text.toString()
+           request.engineNo= _binding?.etEngine?.text.toString()
+           request.date= _binding?.tvDate?.text.toString()
+            request.id="0"
+
 
             var key: String? =yourReference?.push()?.key
 
-            yourReference?.child(key.toString())?.setValue(data)?.addOnCompleteListener {
+            yourReference?.child(key.toString())?.setValue(request)?.addOnCompleteListener {
                 if(it.isSuccessful)
                 {
                     _binding?.progressBar?.visibility=GONE
@@ -158,7 +296,7 @@ class AddBikeActivity : AppCompatActivity() {
                 photoUri = photoFile?.let {
                     FileProvider.getUriForFile(
                         applicationContext,
-                        BuildConfig.APPLICATION_ID + ".provider",
+                        "com.example.bikegarage" + ".provider",
                         it
                     )
                 }
@@ -185,15 +323,15 @@ class AddBikeActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             try {
                 val uri = FileProvider.getUriForFile(
-                    _activity!!, BuildConfig.APPLICATION_ID + ".provider",
+                    _activity!!, "com.example.bikegarage.provider",
                     photoFile!!
                 )
+                launchImageCropper(uri)
                 /* // Uri resultUri = Objects.requireNonNull(CropImage.getActivityResult(result.getData())).getUri();
         Bitmap bmp = MediaStore.Images.Media.getBitmap(_activity.getContentResolver(), uri);
         Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
-        String path = MediaStore.Images.Media.insertImage(_activity.getContentResolver(), bmp, "title", null);*/launchImageCropper(
-                    uri
-                )
+        String path = MediaStore.Images.Media.insertImage(_activity.getContentResolver(), bmp, "title", null);*/
+
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
@@ -278,7 +416,8 @@ class AddBikeActivity : AppCompatActivity() {
             // or failure of image
             storageRefrence.putFile(resultUri!!)
                 .addOnSuccessListener(
-                    OnSuccessListener<UploadTask.TaskSnapshot?> { // Image uploaded successfully
+                    OnSuccessListener<UploadTask.TaskSnapshot?> {
+                        // Image uploaded successfully
                         // Dismiss dialog
                         progressDialog.dismiss()
                         Toast
@@ -288,7 +427,18 @@ class AddBikeActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             )
                             .show()
+
+
+                        storageRefrence.downloadUrl.addOnSuccessListener {
+                            var url=it.toString()
+                            Log.e("DDDDDD****",""+url)
+                            request.imageurl=url!!
+
+                        }
+
+
                     })
+
                 .addOnFailureListener(OnFailureListener { e -> // Error, Image not uploaded
                     progressDialog.dismiss()
                     Toast
@@ -299,6 +449,16 @@ class AddBikeActivity : AppCompatActivity() {
                         )
                         .show()
                 })
+             /*   .addOnCompleteListener(OnCompleteListener<UploadTask.TaskSnapshot> { task ->
+                if (task.isSuccessful) {
+                    var downloadUrl = task.result.storage.downloadUrl.toString()
+                   // updatetoFirebaseDatabase()
+                    Log.e("Pramof>>>>",""+downloadUrl)
+                } else {
+                    val message = task.exception!!.message
+                }
+            })*/
+
                 .addOnProgressListener(
                     OnProgressListener<UploadTask.TaskSnapshot> { taskSnapshot ->
 
@@ -328,6 +488,10 @@ class AddBikeActivity : AppCompatActivity() {
         }
         return imageFile
     }
-
+    private fun updateDateInView() {
+        val myFormat = "dd/MMM/yyyy" // mention the format you need
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        _binding!!.tvDate.setText( sdf.format(cal.getTime()).toString())
+    }
 
 }

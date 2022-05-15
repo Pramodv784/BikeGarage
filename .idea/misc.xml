@@ -5,14 +5,18 @@
       <map>
         <entry key="..\:/Users/User/AppData/Local/Android/Sdk/platforms/android-31/data/res/drawable/btn_plus.xml" value="0.1865" />
         <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/drawable/btn_bg.xml" value="0.137" />
-        <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/activity_add_bike.xml" value="0.4" />
+        <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/drawable/btn_bg_red.xml" value="0.1495" />
+        <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/drawable/edit_bg.xml" value="0.1495" />
+        <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/activity_add_bike.xml" value="0.32334869431643626" />
+        <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/activity_bike_detail_page.xml" value="0.176" />
         <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/activity_main.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/bottomsheet_image_picker.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/custom_edit_text.xml" value="0.29066985645933013" />
+        <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/demo.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/dummy_layout.xml" value="0.536" />
         <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/list_item_view.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/layout/top_header.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/User/Downloads/flutterApp/BIkeGarage/app/src/main/res/xml/xml.xml" value="0.33177083333333335" />
-        <entry key="..\:/Users/user/Documents/BikeGarage/app/src/main/res/layout/bottomsheet_image_picker.xml" value="0.11875" />
       </map>
     </option>
   </component>

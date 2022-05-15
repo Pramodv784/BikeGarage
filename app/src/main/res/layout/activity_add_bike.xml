@@ -17,7 +17,12 @@
         android:visibility="gone"
         android:id="@+id/progressBar"
         android:layout_centerInParent="true"/>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/topbar"
 
+    android:layout_above="@+id/bt_add">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_margin="@dimen/_10sdp"
@@ -31,10 +36,140 @@
             android:layout_gravity="center"
             android:id="@+id/iv_image"
             android:src="@drawable/ic_image"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click to Choose image "
+            android:layout_gravity="center"
+            android:textSize="@dimen/_20sdp"
+            android:textColor="@color/black"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Enter User name"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etUserName"
+                android:inputType="text"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.AppTheme.TextInputLayoutList"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:hint="User's Father name "
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:id="@+id/etUser_sonof"
+            android:inputType="text"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Address"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etAddress"
+                android:inputType="textPostalAddress"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:id="@+id/tv_date"
+            android:text="Choose date"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:background="@drawable/edit_bg"/>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter District"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etDistrict"
+                android:inputType="textPostalAddress"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.AppTheme.TextInputLayoutList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Enter Mobile Number"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/etMobile"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.AppTheme.TextInputLayoutList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Alternate Mobile Number"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/etAlternateMobile"
+                    android:inputType="phone"
+
+                    android:maxLength="10"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
 
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        style="@style/Widget.AppTheme.TextInputLayoutList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Bike Name"
@@ -42,49 +177,198 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:id="@+id/etName"
+            android:id="@+id/etBikeName"
+            android:inputType="text"
             android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Bike RC number"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etRc"
+                android:inputType="textCapCharacters"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Bike CH number"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etCh"
+                android:inputType="textCapCharacters"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Bike Engine number"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etEngine"
+                android:inputType="textCapCharacters"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Bike Price"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etBikePrice"
+                android:inputType="number"
+                android:maxLength="8"
+                android:textStyle="bold"
+                android:textSize="@dimen/_15sdp"
+                android:drawableTint="@color/green"
+                android:drawablePadding="@dimen/_5sdp"
+                android:drawableLeft="@drawable/rupee"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Total User Pay Amount"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etUserPay"
+                android:inputType="number"
+                android:maxLength="8"
+                android:textStyle="bold"
+                android:textSize="@dimen/_15sdp"
+                android:drawableTint="@color/green"
+                android:drawablePadding="@dimen/_5sdp"
+                android:drawableLeft="@drawable/rupee"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Remainig Amount"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etRemainAmount"
+                android:inputType="number"
+                android:maxLength="8"
+                android:enabled="false"
+                android:defaultFocusHighlightEnabled="true"
+                android:textStyle="bold"
+                android:textSize="@dimen/_15sdp"
+                android:drawableTint="@color/green"
+                android:drawablePadding="@dimen/_5sdp"
+                android:drawableLeft="@drawable/rupee"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="wrap_content"
+            android:hint="Enter  Gurantee User name"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etGurantee"
+                android:inputType="text"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="wrap_content"
+            android:hint="Enter  Gurantee User Address"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etGuranteeAddress"
+                android:inputType="textPostalAddress"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.AppTheme.TextInputLayoutList"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="wrap_content"
+            android:hint="Enter  Gurantee User District"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/etGuranterDistrict"
+                android:inputType="textPostalAddress"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        style="@style/Widget.AppTheme.TextInputLayoutList"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_height="wrap_content"
-        android:hint="Enter Bike brand"
+        android:hint="Enter Guarantee User Mobile Number"
        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:id="@+id/etBrand"
+            android:id="@+id/etGuranteePhone"
+            android:inputType="phone"
             android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_height="wrap_content"
-        android:hint="Enter Bike Model"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
-            android:id="@+id/etModel"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_20sdp"
+            android:text="Add Bike"
 
-    </com.google.android.material.textfield.TextInputLayout>\
+            android:id="@+id/bt_add"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_bg"/>
     </LinearLayout>
+</ScrollView>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/_20sdp"
-        android:text="Add Bike"
-        android:id="@+id/bt_add"
-        android:textColor="@color/white"
-        android:background="@drawable/btn_bg"/>
+
 </RelativeLayout>
 </layout>

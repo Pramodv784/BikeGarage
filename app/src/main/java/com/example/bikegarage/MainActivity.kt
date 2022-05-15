@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -32,7 +33,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
 
-
+          _binding?.topbar?.tvTitle?.setText("Yuvi Chandravanshi Auto Deal")
+          _binding?.topbar?.ivBack?.visibility=View.GONE
+          _binding?.progressBar?.visibility= View.VISIBLE
         _binding?.fabBt?.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddBikeActivity::class.java))
 
@@ -42,16 +45,17 @@ class MainActivity : AppCompatActivity() {
                 /* This method is called once with the initial value and again whenever data at this location is updated.*/
                 val value = dataSnapshot.childrenCount
                  itemList.clear()
+                _binding?.progressBar?.visibility= View.GONE
 
                 // var itemData: ArrayList<AddBikeModel>? = dta.values
                 for (data in dataSnapshot.children) {
-
-
+                   Log.e("Datta Id","${data}")
                   val dataBike = data.getValue(AddBikeModel::class.java)!!
+                    dataBike.id=data.key
                     itemList.add(dataBike)
                 }
-
-                Log.e("item size :::::::" , " ${itemList[0].bikeBrand}")
+                 _binding?.tv?.setText("Total Bike Sale  "+itemList.size)
+//                Log.e("item size :::::::" , " ${itemList[0].bikeName}")
                 _adaptor= BikeListAdaptor(this@MainActivity,itemList)
                 _binding?.rv?.apply {
                     adapter=_adaptor

@@ -23,7 +23,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="?attr/selectableItemBackground"
-            android:onClick="@{()->activity.onBackPressed()}"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_back_arrow" />
 
@@ -34,6 +33,9 @@
             android:gravity="center"
             android:textFontWeight="500"
             tools:targetApi="p"
+            android:textSize="@dimen/_20sdp"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:text="" />
 
 
